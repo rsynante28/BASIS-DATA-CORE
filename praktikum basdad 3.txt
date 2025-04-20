@@ -1,0 +1,305 @@
+Microsoft Windows [Version 10.0.22000.1335]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\amelia>cd..
+
+C:\Users>cd..
+
+C:\>cd xampp\mysql\bin
+
+C:\xampp\mysql\bin>mysql -u root -p
+Enter password:
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 8
+Server version: 10.4.24-MariaDB mariadb.org binary distribution
+
+Copyright (c) 2000, 2018, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> create database classicmodels;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| akademik           |
+| baru               |
+| classicmodels      |
+| information_schema |
+| kuliah             |
+| materi             |
+| mysql              |
+| penjualan          |
+| performance_schema |
+| perpulangan        |
+| phpmyadmin         |
+| si_rumah_sakit     |
+| test               |
+| tugas              |
++--------------------+
+14 rows in set (0.001 sec)
+
+MariaDB [(none)]> use classicmodels;
+Database changed
+MariaDB [classicmodels]> show tables;
++-------------------------+
+| Tables_in_classicmodels |
++-------------------------+
+| customers               |
+| employees               |
+| karyawan                |
+| offices                 |
+| orderdetails            |
+| orders                  |
+| payments                |
+| pelanggan               |
+| productlines            |
+| products                |
+| produk                  |
++-------------------------+
+11 rows in set (0.001 sec)
+
+MariaDB [classicmodels]> DELIMITER //
+MariaDB [classicmodels]> CREATE PROCEDURE GetOfficeByCountry(
+    -> in countryName char (255))
+    -> BEGIN
+    -> SELECT * FROM offices
+    -> WHERE country * countryName;
+    -> END //
+Query OK, 0 rows affected (0.006 sec)
+
+MariaDB [classicmodels]> CALL GetOfficialByCountry('USA');
+    -> DELIMITER //
+ERROR 1305 (42000): PROCEDURE classicmodels.GetOfficialByCountry does not exist
+MariaDB [classicmodels]> CALL GetOfficeByCountry('USA');
+    -> DELIMITER //
+Empty set (0.002 sec)
+
+Query OK, 0 rows affected, 14 warnings (0.002 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER' at line 1
+MariaDB [classicmodels]> drop DELIMITER;
+    -> END//
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER;
+END' at line 1
+MariaDB [classicmodels]> DROP PROCEDURE GetOfficeByCountry
+    -> DELIMITER //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER' at line 2
+MariaDB [classicmodels]> DROP PROCEDURE GrtOfficeByCountry;
+    -> DELIMITER //
+ERROR 1305 (42000): PROCEDURE classicmodels.GrtOfficeByCountry does not exist
+MariaDB [classicmodels]> DROP PROCEDURE GetOfficeByCountry;
+    -> DELIMITER //
+Query OK, 0 rows affected (0.005 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER' at line 1
+MariaDB [classicmodels]> DELIMITER //
+MariaDB [classicmodels]> CREATE PRODUCE GetOfficeByCountry(
+    -> in countryName char (255))
+    -> BEGIN
+    -> SELECT * FROM offices
+    -> WHERE country = countryName;
+    -> END //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'PRODUCE GetOfficeByCountry(
+in countryName char (255))
+BEGIN
+SELECT * FROM of...' at line 1
+MariaDB [classicmodels]> DELIMITER //
+MariaDB [classicmodels]> CREATE PROCEDURE GetOfficeByCountry(
+    -> in countryName char (255)0
+    -> BEGIN
+    -> SELECT * FROM offices
+    -> WHERE country = countryName;
+    -> END //
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '0
+BEGIN
+SELECT * FROM offices
+WHERE country = countryName;
+END' at line 2
+MariaDB [classicmodels]> DELIMITER //
+MariaDB [classicmodels]> CREATE PROCEDURE GetOfficeByCountry(
+    -> in countryName char (255))
+    -> BEGIN
+    -> SELECT * FROM offices
+    -> WHERE country = countryName;
+    -> END //
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [classicmodels]> CALL GetOfficeByCountry('USA');
+    -> DELIMITER //
++------------+---------------+-----------------+----------------------+--------------+-------+---------+------------+-----------+
+| officeCode | city          | phone           | addressLine1         | addressLine2 | state | country | postalCode | territory |
++------------+---------------+-----------------+----------------------+--------------+-------+---------+------------+-----------+
+| 1          | San Francisco | +1 650 219 4782 | 100 Market Street    | Suite 300    | CA    | USA     | 94080      | NA        |
+| 2          | Boston        | +1 215 837 0825 | 1550 Court Place     | Suite 102    | MA    | USA     | 02107      | NA        |
+| 3          | NYC           | +1 212 555 3000 | 523 East 53rd Street | apt. 5A      | NY    | USA     | 10022      | NA        |
++------------+---------------+-----------------+----------------------+--------------+-------+---------+------------+-----------+
+3 rows in set (0.001 sec)
+
+Query OK, 0 rows affected (0.009 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER' at line 1
+MariaDB [classicmodels]> DELIMITER $$
+MariaDB [classicmodels]> CREATE PROCEDURE GetOrderByStatus (
+    -> IN orderStatus char(25),
+    -> OUT total INT)
+    -> SELECT COUNT (orderNumber)
+    -> INTO total
+    -> FROM order
+    -> where status = orderStatus;
+    -> END$$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'order
+where status = orderStatus;
+END' at line 6
+MariaDB [classicmodels]> DELIMITER $$
+MariaDB [classicmodels]> CREATE PROCEDURE GetOrderByStatus (
+    -> IN order Status char (25),
+    -> OUT total INT)
+    -> SELECT COUNT (orderNumber)
+    -> INTO total
+    -> FROM order
+    -> WHERE status = orderStatus;
+    -> END$$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'order Status char (25),
+OUT total INT)
+SELECT COUNT (orderNumber)
+INTO total
+...' at line 2
+MariaDB [classicmodels]>  DELIMITER $$
+MariaDB [classicmodels]> CREATE PROCEDURE GetOrderByStatus (
+    -> IN orderStatus char (25),
+    -> OUT total INT)
+    -> SELECT COUNT (orderNumber)
+    -> INTO total
+    -> FROM order
+    -> WHERE status = orderStatus;
+    -> END$$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'order
+WHERE status = orderStatus;
+END' at line 6
+MariaDB [classicmodels]> DELIMITER $$
+MariaDB [classicmodels]> CREATE PROCEDURE GetOrderByStatus (
+    -> IN orderStatus char (25),
+    -> OUT total INT)
+    -> SELECT COUNT (orderNumber)
+    -> INTO total
+    -> FROM orders
+    -> WHERE status = orderStatus;
+    -> END$$
+Query OK, 0 rows affected (0.006 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'END' at line 1
+MariaDB [classicmodels]> CALL GetOrderCountryByStatus ('shipped', @total);
+    -> DELIMITER$$
+ERROR 1305 (42000): PROCEDURE classicmodels.GetOrderCountryByStatus does not exist
+MariaDB [classicmodels]> CALL GetOrderByStatus ('shipped', @total);
+    -> DELIMTER$$
+ERROR 1630 (42000): FUNCTION classicmodels.COUNT does not exist. Check the 'Function Name Parsing and Resolution' section in the Reference Manual
+MariaDB [classicmodels]> DROP PROCEDURE GetOrderByStatus;
+    -> DELIMITER//
+    -> //
+    -> DELIMTER//
+    -> END//
+    -> DELIMITER$$
+Query OK, 0 rows affected (0.005 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER////
+DELIMTER//
+END//
+DELIMITER' at line 1
+MariaDB [classicmodels]> DROP PROCEDURE GetOrderByStatus;
+    -> DELIMITER$$
+ERROR 1305 (42000): PROCEDURE classicmodels.GetOrderByStatus does not exist
+MariaDB [classicmodels]> DELIMITER $$
+MariaDB [classicmodels]> CREATE PROCEDURE GetOrderCountByStatus (
+    -> IN orderStatus char (25),
+    -> OUT total INT)
+    -> BEGIN
+    -> SELECT COUNT(orderNumber)
+    -> INTO total
+    -> FROM orders
+    -> WHERE status = orderStatus;
+    -> END$$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [classicmodels]> CALL GetOrderCountByStatus ('shipped')@total);
+    -> DELIMITER$$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '@total);
+DELIMITER' at line 1
+MariaDB [classicmodels]> CALL GetOrderCountByStatus ('shipped'), @total);
+    -> DELIMITER$$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near ' @total);
+DELIMITER' at line 1
+MariaDB [classicmodels]> CALL GetOrderCountByStatus ('shipped', @total)
+    -> ;
+    -> DELIMITER$$
+Query OK, 1 row affected (0.001 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER' at line 1
+MariaDB [classicmodels]> SELECT @total AS jumStatusShipped;
+    -> DELIMITER$$
++------------------+
+| jumStatusShipped |
++------------------+
+|              303 |
++------------------+
+1 row in set (0.000 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER' at line 1
+MariaDB [classicmodels]> CREATE PROCEDURE setHitung(
+    -> INOUT hitung INT,
+    -> IN jum INT)
+    -> BEGIN
+    -> set hitung = hitung + jum;
+    -> END$$
+ERROR 1304 (42000): PROCEDURE setHitung already exists
+MariaDB [classicmodels]> DROP PROCEDURE setHitung;
+    -> DELIMITER //
+    -> $$
+Query OK, 0 rows affected (0.006 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'DELIMITER //' at line 1
+MariaDB [classicmodels]> CREATE PROCEDURE setHitung(
+    -> INOUT hitung INT,
+    -> IN jum INT)
+    -> BEGIN
+    -> set hitung = hitung + jum;
+    -> DELIMITER$$
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '' at line 6
+MariaDB [classicmodels]> CREATE PROCEDURE setHitung(
+    -> INOUT hitung INT,
+    -> IN jum INT)
+    -> BEGIN
+    -> set hitung = hitung + jum;
+    -> END$$
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [classicmodels]> SET @hitung = 2;
+    -> END$$
+Query OK, 0 rows affected (0.000 sec)
+
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'END' at line 1
+MariaDB [classicmodels]> CALL setHitung (@hitung,2);
+    -> $$
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [classicmodels]> CALL setHitung (@hitung,4);
+    -> $$
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [classicmodels]> CALL setHitung (@hitung,2);
+    -> $$
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [classicmodels]> SELECT @hitung AS JumlahAkhir;
+    -> $$
++-------------+
+| JumlahAkhir |
++-------------+
+|          10 |
++-------------+
+1 row in set (0.000 sec)
+
+MariaDB [classicmodels]>
